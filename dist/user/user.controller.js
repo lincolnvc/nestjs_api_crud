@@ -17,34 +17,28 @@ const common_1 = require("@nestjs/common");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const update_put_user_dto_1 = require("./dto/update-put-user.dto");
 const update_patch_user_dto_1 = require("./dto/update-patch-user.dto");
+const user_service_1 = require("./user.service");
 let UserController = exports.UserController = class UserController {
-    async create(body) {
-        return { body };
+    constructor(userService) {
+        this.userService = userService;
+    }
+    async create(data) {
+        return this.userService.create(data);
     }
     async read() {
-        return { users: [] };
+        return this.userService.list();
     }
-    async readOne(params) {
-        return { user: {}, params };
+    async readOne(id) {
+        return this.userService.show(id);
     }
-    async update(body, params) {
-        return {
-            method: 'put',
-            body,
-            params
-        };
+    async update(body, id) {
+        return this.userService.update(id, body);
     }
-    async updateParcial(body, params) {
-        return {
-            method: 'patch',
-            body,
-            params
-        };
+    async updateParcial(body, id) {
+        return this.userService.updatePartial(id, body);
     }
     async delete(id) {
-        return {
-            id
-        };
+        return this.userService.delete(id);
     }
 };
 __decorate([
@@ -62,25 +56,25 @@ __decorate([
 ], UserController.prototype, "read", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "readOne", null);
 __decorate([
     (0, common_1.Put)(':id'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Param)()),
+    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [update_put_user_dto_1.UpdatePutUserDTO, Object]),
+    __metadata("design:paramtypes", [update_put_user_dto_1.UpdatePutUserDTO, Number]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "update", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Param)()),
+    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [update_patch_user_dto_1.UpdatePatchUserDTO, Object]),
+    __metadata("design:paramtypes", [update_patch_user_dto_1.UpdatePatchUserDTO, Number]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateParcial", null);
 __decorate([
@@ -91,6 +85,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "delete", null);
 exports.UserController = UserController = __decorate([
-    (0, common_1.Controller)('users')
+    (0, common_1.Controller)('users'),
+    __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map
