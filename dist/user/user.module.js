@@ -11,7 +11,14 @@ const common_1 = require("@nestjs/common");
 const user_controller_1 = require("./user.controller");
 const user_service_1 = require("./user.service");
 const prisma_module_1 = require("../prisma/prisma.module");
+const user_id_check_middleware_1 = require("../middlewares/user-id-check.middleware");
 let UserModule = exports.UserModule = class UserModule {
+    configure(consumer) {
+        consumer.apply(user_id_check_middleware_1.UserIdCheckMiddleware).forRoutes({
+            path: 'users/:id',
+            method: common_1.RequestMethod.ALL
+        });
+    }
 };
 exports.UserModule = UserModule = __decorate([
     (0, common_1.Module)({

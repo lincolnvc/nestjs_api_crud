@@ -68,8 +68,12 @@ let UserService = exports.UserService = class UserService {
         });
     }
     async exists(id) {
-        if (!(await this.show(id))) {
-            throw new common_1.NotFoundException(`O usu�rio ${id} n�o foi encontrado.`);
+        if (!(await this.prisma.users.count({
+            where: {
+                id
+            }
+        }))) {
+            throw new common_1.NotFoundException(`O usuário ${id} não foi encontrado.`);
         }
     }
 };

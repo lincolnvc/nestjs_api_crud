@@ -73,9 +73,12 @@ export class UserService {
     }
 
     async exists(id: number) {
-        if (!(await this.show(id))) {
-            throw new NotFoundException(`O usu·rio ${id} n„o foi encontrado.`);
+        if (!(await this.prisma.users.count({
+            where: {
+                id
+            }
+        }))) {
+            throw new NotFoundException(`O usu√°rio ${id} n√£o foi encontrado.`);
         }
     }
-
 }
